@@ -16,7 +16,7 @@ print(transcript)
 img_name = str(img_path)[29:]
 print(img_name)
 
-#img_save_to = "/path/to/a/folder"
+img_save_to = "/path/to/a/folder"
 response_img = requests.get(img_path)
 with open(img_save_to, "wb") as file:
         file.write(response_img.content)
