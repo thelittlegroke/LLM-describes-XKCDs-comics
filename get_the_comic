@@ -1,0 +1,36 @@
+import requests
+from bs4 import BeautifulSoup
+import json
+import tkinter as tk
+
+
+path = f'https://xkcd.com/3017/info.0.json'
+res = requests.get(path)
+scraped = res.text
+soup = BeautifulSoup(scraped, 'html.parser')
+soup_corr = json.loads(soup.text)
+img_path = soup_corr["img"]
+description = soup_corr["alt"]
+transcript = soup_corr["transcript"]
+print(transcript)
+img_name = str(img_path)[29:]
+print(img_name)
+
+#img_save_to = "/path/to/a/folder"
+response_img = requests.get(img_path)
+with open(img_save_to, "wb") as file:
+        file.write(response_img.content)
+
+parent = tk.Tk()
+canvas = tk.Canvas(width=1400, height=900, bg='white')
+
+
+parent.title("XKCD")
+image = tk.PhotoImage(file=img_save_to)
+#image_label = tk.Label(parent, image=image)
+#image_label.pack()
+canvas.create_image(600, 500, image=image)
+canvas.create_text(700, 200, text=description, fill="black", font=('"Prestige Elite Std" 14 bold'))
+canvas.pack()
+
+parent.mainloop()
